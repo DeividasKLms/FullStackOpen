@@ -1,5 +1,9 @@
 {
+<<<<<<< HEAD
   "name": "unicafe",
+=======
+  "name": "part1",
+>>>>>>> e7c070cf60e82b6bd2befb9c289ac1084ed47032
   "private": true,
   "version": "0.0.0",
   "type": "module",
