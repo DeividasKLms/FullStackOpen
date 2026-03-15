@@ -3,15 +3,12 @@ import Weather from "./services/Weather"
 
 const CountryInfo = ({ country, weather, setWeather }) => {
     useEffect(() => {
-        console.log("country effect:", country)
         if (!country) 
             return null
 
         Weather
             .getCountry(country)
             .then(w => {
-                console.log("country:", country)
-                console.log("data:", w)
                 setWeather(w)
             })
         }, [country])
@@ -20,8 +17,6 @@ const CountryInfo = ({ country, weather, setWeather }) => {
     const iconUrl = icon
     ? `https://openweathermap.org/payload/api/media/file/${weather?.list?.[0]?.weather?.[0]?.icon}.png`
     : null
-
-    console.log(weather)
 
     return (
         <div>
