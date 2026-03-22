@@ -43,8 +43,8 @@ app.get("/api/persons", (request, response) => {
 })
 
 app.get("/api/persons/:id", (request, response) => {
-    id = request.params.id
-    person = phonebook.find(p => p.id === id)
+    const id = request.params.id
+    const person = phonebook.find(p => p.id === id)
 
     if (person) {
         response.json(person)
@@ -59,8 +59,8 @@ app.get("/info", (request, response) => {
 })
 
 app.post("/api/persons", (request, response) => {
-    body = request.body
-    copy = phonebook.find(p => p.name === body.name)
+    const body = request.body
+    const copy = phonebook.find(p => p.name === body.name)
 
     if (!body.name) {
         return response.status(400).json({
@@ -90,8 +90,28 @@ app.post("/api/persons", (request, response) => {
     response.json(person)
 })
 
+app.put("/api/persons/:id", (request, response) => {
+    const id = request.params.id
+    const body = request.body
+
+    const person = phonebook.find(p => p.id === id)
+
+    if (!person) {
+        return response.status(404).json({ error: "Person not found" })
+    }
+
+    const updatedPerson = {
+        ...person,
+        number: body.number
+    }
+
+    phonebook = phonebook.map(p => p.id === id ? updatedPerson : p)
+
+    response.json(updatedPerson)
+})
+
 app.delete("/api/persons/:id", (request, response) => {
-    id = request.params.id
+    const id = request.params.id
     phonebook = phonebook.filter(p => p.id !== id)
 
     response.status(204).end()
