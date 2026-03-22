@@ -9,11 +9,15 @@
   "scripts": {
     "start": "node index.js",
     "dev": "node --watch index.js",
+    "build:ui": "rm -rf dist && cd C:/Users/deivi/Desktop/Github/part-2/notes && npm run build && cp -r dist C:/Users/deivi/Desktop/Github/part-3/Notes-backend",
+    "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push",
     "test": "\"echo \\\"Error: no test specified\\\" && exit 1\""
   },
   "dependencies": {
-    "cors": "^2.8.6",
+    "dotenv": "^17.3.1",
     "express": "^5.2.1",
-    "node": "^25.8.1"
+    "mogoose": "^0.0.1-security",
+    "mongodb": "^7.1.0",
+    "mongoose": "^9.3.1"
   }
 }
