@@ -9,11 +9,11 @@ const Persons = ({ person, filter, setPersons }) => {
     const remove = (id) => {
         const contact = person.find(p => p.id === id)
 
-        if (window.confirm(`delete ${contact.name} ?`))
+        if (window.confirm(`delete ${contact.name}?`))
             phoneBookService
                 .remove(id)
                 .then(removedPerson => {
-                    setPersons(person.map(persons => persons.id === id ? removedPerson : persons))
+                    setPersons(person.filter(persons => persons.id !== id))
                 })
     }
 
