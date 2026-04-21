@@ -1,3 +1,4 @@
+require('dns').setServers(['8.8.8.8', '1.1.1.1'])
 const mongoose = require('mongoose')
 
 mongoose.set('strictQuery', false)
@@ -10,7 +11,7 @@ mongoose.connect(url, { family: 4 })
     console.log('connected to MongoDB')
   })
   .catch(error => {
-    console.log('error connecting to MongoDB', error.message)
+    console.log('error connecting to MongoDB', error)
   })
 
 const personSchema = new mongoose.Schema({

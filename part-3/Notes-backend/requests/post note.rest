@@ -1,7 +1,8 @@
 POST http://localhost:3001/api/notes
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkxtMTJzMzQiLCJpZCI6IjY5ZDdjNWFlOTllMTg0MmU2ODVjZjZiNSIsImlhdCI6MTc3NTk5Njk3OX0.qphylfU-KS1_oVPPdVfgwIIec01VCUjc067yMch4rg0
 
 {
-    "content": "lol",
+    "content": "eeereyer",
     "important": true
 }
