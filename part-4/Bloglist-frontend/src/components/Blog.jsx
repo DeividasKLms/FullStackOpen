@@ -11,8 +11,6 @@ const Blog = ({ blog, addLikes, user, remove }) => {
     marginBottom: 5
   }
 
-  console.log(user._id)
-
   return (
     <div style={blogStyle}>
       <div>
