@@ -13,19 +13,18 @@ const Blog = ({ blog, addLikes, user, remove }) => {
 
   return (
     <div style={blogStyle}>
-      <div>
+      <div className='blog'>
         {blog.title} {blog.author} <button onClick={() => setViewVisible(!viewVisible)}>view</button>
 
         {!viewVisible && ''}
         {viewVisible &&
-        <div>
-          {blog.url} <br/>
-          {`likes: ${blog.likes}`} <button onClick={addLikes}>like</button> <br/>
-          {blog.user.name} <br/>
-          {user.id.toString() === blog.user.id.toString() &&
-          <button onClick={remove}>remove</button>
-          }
-        </div>
+          <div>
+            {blog.url} <br/>
+            {`likes: ${blog.likes}`} <button onClick={addLikes}>like</button> <br/>
+            {blog.user.name} <br/>
+            {user.id.toString() === blog.user.id.toString() &&
+              <button onClick={remove}>remove</button>}
+          </div>
         }
       </div>
     </div>
