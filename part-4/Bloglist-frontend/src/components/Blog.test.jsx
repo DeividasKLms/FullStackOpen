@@ -40,4 +40,35 @@ describe('<Blog />', () => {
     expect(div).toHaveTextContent('https://youtu.be/dQw4w9WgXcQ?si=chv98e9bF7IHqA9_')
     expect(div).toHaveTextContent('likes: 0')
   })
+
+  test('renders like button click twice', async () => {
+    const blog = {
+      title: 'Surfs up!',
+      author: 'Elvis Presley',
+      url: 'https://youtu.be/dQw4w9WgXcQ?si=chv98e9bF7IHqA9_',
+      likes: 0,
+      user: { name: 'Superuser', id: '123' }
+    }
+
+    const addLikes = vi.fn()
+    render(
+      <Blog
+        blog={blog}
+        user={{ name: 'Superuser', id: '123' }}
+        addLikes={addLikes}
+      />
+    )
+
+    const user = userEvent.setup()
+    const viewButton = screen.getByText('view')
+
+    await user.click(viewButton)
+
+    const likeButton = screen.getByText('like')
+
+    await user.click(likeButton)
+    await user.click(likeButton)
+
+    expect(addLikes.mock.calls).toHaveLength(2)
+  })
 })
