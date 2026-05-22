@@ -58,7 +58,7 @@ const App = () => {
         setBlogs(blogs.concat(returnedBlog))
       })
     setMessageType('error')
-    setMessage('wrong username or password')
+    setMessage('wrong or missing userId')
     setTimeout(() => {
       setMessage(null)
     }, 5000)
