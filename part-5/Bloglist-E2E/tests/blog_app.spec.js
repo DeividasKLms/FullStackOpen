@@ -36,4 +36,37 @@ describe('Blog app', () => {
       expect(page.getByText('athletic logged in')).not.toBeVisible()
     })
   })
+
+  describe('When logged in', () => {
+    beforeEach(async ({ page }) => {
+      await loginWith(page, 'athletic', 'obamium')
+    })
+
+    test('a new blog can be created', async ({ page }) => {
+      await createBlog(page, 'Surfs up!', 'Some_Rapper', 'https://youtu.be/dQw4w9WgXcQ?si=uViKSWKb7sOeyqo5')
+      await expect(page.getByText('Surfs up! Some_Rapper'))
+    })
+
+    describe('a blog exists', () => {
+      beforeEach(async ({ page }) => {
+        await createBlog(page, 'Surfs up!', 'Some_Rapper', 'https://youtu.be/dQw4w9WgXcQ?si=uViKSWKb7sOeyqo5')
+      })
+
+      test('a blog can be liked', async ({ page }) => {
+        await page.getByRole('button', { name: 'view' }).click()
+        await page.getByRole('button', { name: 'like' }).click()
+        await expect(page.getByText('likes: 1')).toBeVisible()
+      })
+
+      test('a blog can be deleted', async ({ page }) => {
+        await page.getByRole('button', { name: 'view' }).click()
+        page.on('dialog', async (dialog) => {
+          await dialog.accept()
+        })
+        
+        await page.getByRole('button', { name: 'remove' }).click()
+        await expect(page.getByText('Surfs up! Some_Rapper')).not.toBeVisible()
+      })
+    })
+  })
 })
