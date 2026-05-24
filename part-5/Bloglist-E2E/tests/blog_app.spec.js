@@ -11,6 +11,13 @@ describe('Blog app', () => {
         password: 'obamium'
       }
     })
+    await request.post('/api/users', {
+      data: {
+        name: 'Small Guy',
+        username: 'frail',
+        password: 'obamium'
+      }
+    })
 
     await page.goto('/')
   })
@@ -66,6 +73,21 @@ describe('Blog app', () => {
         
         await page.getByRole('button', { name: 'remove' }).click()
         await expect(page.getByText('Surfs up! Some_Rapper')).not.toBeVisible()
+      })
+
+      test('remove button not seen by different users', async ({ page }) => {
+        await page.getByRole('button', { name: 'loggout' }).click()
+        await page.reload()
+
+        await loginWith(page, 'frail', 'obamium')
+        await page.getByRole('button', { name: 'view' }).click()
+        await expect(page.getByRole('button', { name: 'remove' })).not.toBeVisible()
+      })
+    })
+
+    describe('Multiple blogs exist', () => {
+      test('blogs are ordered by most likes', async ({ page }) => {
+        /* To be added */
       })
     })
   })
