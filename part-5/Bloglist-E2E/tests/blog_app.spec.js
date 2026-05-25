@@ -86,8 +86,18 @@ describe('Blog app', () => {
     })
 
     describe('Multiple blogs exist', () => {
+      beforeEach(async ({ page }) => {
+        await createBlog(page, 'Surfs up!', 'Some_Rapper', 'https://youtu.be/dQw4w9WgXcQ?si=zQlk9I6n9-mBO6wH',)
+        await createBlog(page, 'Hit the road!', 'Stranger', 'https://youtu.be/dQw4w9WgXcQ?si=zQlk9I6n9-mBO6wH')
+        await createBlog(page, 'Country road', 'Abraham', 'https://youtu.be/dQw4w9WgXcQ?si=zQlk9I6n9-mBO6wH')
+      })
+
       test('blogs are ordered by most likes', async ({ page }) => {
-        /* To be added */
+        const blog = page.locator('.blog')
+        await blog.nth(2).getByRole('button', { name: 'view' }).click()
+        await blog.nth(2).getByRole('button', { name: 'like' }).click()
+
+        await expect(blog.nth(0)).toContainText('Country road Abraham')
       })
     })
   })
