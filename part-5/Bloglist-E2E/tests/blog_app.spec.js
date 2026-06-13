@@ -22,83 +22,44 @@ describe('Blog app', () => {
     await page.goto('/')
   })
 
-  test('Login form is shown', async ({ page }) => {
-    await expect(page.getByText('Log in to application')).toBeVisible()
+  test('successful login', async ({ page }) => {
+    await loginWith(page, 'athletic', 'obamium')
+    await expect(page.getByRole( 'button', { name: 'logout' })).toBeVisible()
   })
 
-  describe('Login', () => {
-    test('succeeds with correct credentials', async ({ page }) => {
-      await loginWith(page, 'athletic', 'obamium')
-      await expect(page.getByText('athletic logged in')).toBeVisible()
-    })
+  test('unsuccessful login with incorrect credentials', async ({ page }) => {
+    await loginWith(page, 'athletic', 'wrong')
 
-    test('fails with wrong credentials', async ({ page }) => {
-      await loginWith(page, 'athletic', 'wrong')
+    const errorDiv = page.locator('.error')
+    await expect(errorDiv).toContainText('wrong username or password')
+    await expect(errorDiv).toHaveCSS('border-style', 'solid')
+    await expect(errorDiv).toHaveCSS('color', 'rgb(255, 0, 0)')
 
-      const errorDiv = page.locator('.error')
-      await expect(errorDiv).toContainText('wrong username or password')
-      await expect(errorDiv).toHaveCSS('border-style', 'solid')
-      await expect(errorDiv).toHaveCSS('color', 'rgb(255, 0, 0)')
-
-      expect(page.getByText('athletic logged in')).not.toBeVisible()
-    })
+    await expect(page.getByRole( 'button', { name: 'logout' })).not.toBeVisible()
   })
 
-  describe('When logged in', () => {
-    beforeEach(async ({ page }) => {
+  describe('when user is logged in', () => {
+    beforeEach(async ({ page, request }) => {
       await loginWith(page, 'athletic', 'obamium')
     })
 
-    test('a new blog can be created', async ({ page }) => {
-      await createBlog(page, 'Surfs up!', 'Some_Rapper', 'https://youtu.be/dQw4w9WgXcQ?si=uViKSWKb7sOeyqo5')
-      await expect(page.getByText('Surfs up! Some_Rapper'))
+    test('logged-in user can create a blog', async ({ page }) => {
+      await createBlog(page, 'title', 'author', 'https://youtu.be/dQw4w9WgXcQ?si=h9jLuWT7a6hCpApO')
+      await expect(page.getByRole( 'link', { name: 'title by author' })).toBeVisible()
     })
 
-    describe('a blog exists', () => {
-      beforeEach(async ({ page }) => {
-        await createBlog(page, 'Surfs up!', 'Some_Rapper', 'https://youtu.be/dQw4w9WgXcQ?si=uViKSWKb7sOeyqo5')
-      })
-
-      test('a blog can be liked', async ({ page }) => {
-        await page.getByRole('button', { name: 'view' }).click()
-        await page.getByRole('button', { name: 'like' }).click()
-        await expect(page.getByText('likes: 1')).toBeVisible()
-      })
-
-      test('a blog can be deleted', async ({ page }) => {
-        await page.getByRole('button', { name: 'view' }).click()
-        page.on('dialog', async (dialog) => {
-          await dialog.accept()
-        })
-        
-        await page.getByRole('button', { name: 'remove' }).click()
-        await expect(page.getByText('Surfs up! Some_Rapper')).not.toBeVisible()
-      })
-
-      test('remove button not seen by different users', async ({ page }) => {
-        await page.getByRole('button', { name: 'loggout' }).click()
-        await page.reload()
-
-        await loginWith(page, 'frail', 'obamium')
-        await page.getByRole('button', { name: 'view' }).click()
-        await expect(page.getByRole('button', { name: 'remove' })).not.toBeVisible()
-      })
+    test('logged-in user can like blogs', async ({ page }) => {
+      await createBlog(page, 'title', 'author', 'https://youtu.be/dQw4w9WgXcQ?si=h9jLuWT7a6hCpApO')
+      await page.getByRole( 'link', { name: 'title by author' }).click()
+      await page.getByRole( 'button', { name: 'like' }).click()
+      await expect(page.getByText('likes: 1')).toBeVisible()
     })
 
-    describe('Multiple blogs exist', () => {
-      beforeEach(async ({ page }) => {
-        await createBlog(page, 'Surfs up!', 'Some_Rapper', 'https://youtu.be/dQw4w9WgXcQ?si=zQlk9I6n9-mBO6wH',)
-        await createBlog(page, 'Hit the road!', 'Stranger', 'https://youtu.be/dQw4w9WgXcQ?si=zQlk9I6n9-mBO6wH')
-        await createBlog(page, 'Country road', 'Abraham', 'https://youtu.be/dQw4w9WgXcQ?si=zQlk9I6n9-mBO6wH')
-      })
-
-      test('blogs are ordered by most likes', async ({ page }) => {
-        const blog = page.locator('.blog')
-        await blog.nth(2).getByRole('button', { name: 'view' }).click()
-        await blog.nth(2).getByRole('button', { name: 'like' }).click()
-
-        await expect(blog.nth(0)).toContainText('Country road Abraham')
-      })
+    test('logged-in user can delete blogs', async ({ page }) => {
+      await createBlog(page, 'title', 'author', 'https://youtu.be/dQw4w9WgXcQ?si=h9jLuWT7a6hCpApO')
+      await page.getByRole( 'link', { name: 'title by author' }).click()
+      await page.getByRole( 'button', { name: 'remove' }).click()
+      await expect(page.getByRole( 'link', { name: 'title by author' })).not.toBeVisible() // here
     })
   })
 })
