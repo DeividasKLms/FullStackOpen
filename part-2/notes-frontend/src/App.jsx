@@ -1,17 +1,19 @@
 import { useState, useEffect } from 'react'
+import { Page, Navigation, Footer } from './components/Styles'
 import noteService from './services/notes'
 
 import {
   useMatch, Routes, Route, Link,
 } from 'react-router-dom'
+import Notification from './components/Notification'
 import NoteList from './components/NoteList'
 import Home from './components/Home'
-import Footer from './components/Footer'
 import NoteForm from './components/NoteForm'
 import Note from './components/Note'
 
 const App = () => {
   const [notes, setNotes] = useState([])
+  const [notification, setNotification] = useState(null)
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedNoteappUser')
@@ -31,6 +33,10 @@ const App = () => {
   const addNote = noteObject => {
     noteService.create(noteObject).then(returnedNote => {
       setNotes(notes.concat(returnedNote))
+      setNotification({ text: `Note '${returnedNote.content}' added!`, type: 'success' })
+      setTimeout(() => {
+        setNotification(null)
+      }, 5000)
     })
   }
 
@@ -62,25 +68,25 @@ const App = () => {
       })
   }
 
-  const padding = {
-    padding: 5
-  }
-
   const match = useMatch('/notes/:id')
 
   const note = match
     ? notes.find(note => note.id === match.params.id)
     : null
 
-  console.log(note)
+  const padding = {
+    padding: 5
+  }
 
   return (
-    <div>
-      <div>
-        <Link style={padding} to='/'>home</Link>
-        <Link style={padding} to='/notes'>notes</Link>
-        <Link style={padding} to='/create'>new note</Link>
-      </div>
+    <Page>
+      <Navigation>
+        <Link style={padding} to="/">home</Link>
+        <Link style={padding} to="/notes">notes</Link>
+        <Link style={padding} to="/create">new note</Link>
+      </Navigation>
+
+      <Notification notification={notification} />
 
       <Routes>
         <Route path='/notes/:id' element={
@@ -94,8 +100,10 @@ const App = () => {
         <Route path='/create' element={<NoteForm createNote={addNote}/>} />
         <Route path='/' element={<Home />} />
       </Routes>
-      <Footer />
-    </div>
+      <Footer>
+        Note app, Department of Computer science, University of Helsinki 2026
+      </Footer>
+    </Page>
   )
 }
 
