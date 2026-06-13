@@ -1,6 +1,7 @@
 import { useState } from 'react'
+import { TextField, Button } from '@mui/material'
 
-const BlogForm = ({ createBlog, message, messageType }) => {
+const BlogForm = ({ createBlog }) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
@@ -13,12 +14,6 @@ const BlogForm = ({ createBlog, message, messageType }) => {
       url: url
     })
 
-    messageType('success')
-    message(`a new blog ${title} by ${author} added`)
-    setTimeout(() => {
-      message(null)
-    }, 5000)
-
     setTitle('')
     setAuthor('')
     setUrl('')
@@ -30,39 +25,32 @@ const BlogForm = ({ createBlog, message, messageType }) => {
 
       <form onSubmit={addBlog}>
         <div>
-          <label>
-            title
-            <input
-              type="text"
-              value={title}
-              onChange={event => setTitle(event.target.value)}
-              placeholder='title'
-            />
-          </label>
+          <TextField style={{ width: 400 }} size="small"
+            type="text"
+            value={title}
+            onChange={event => setTitle(event.target.value)}
+            placeholder='title'
+          />
         </div>
         <div>
-          <label>
-            author
-            <input
-              type="text"
-              value={author}
-              onChange={event => setAuthor(event.target.value)}
-              placeholder='author'
-            />
-          </label>
+          <TextField style={{ marginTop: 15, width: 400 }} size="small"
+            type="text"
+            value={author}
+            onChange={event => setAuthor(event.target.value)}
+            placeholder='author'
+          />
         </div>
         <div>
-          <label>
-            url
-            <input
-              type="url"
-              value={url}
-              onChange={event => setUrl(event.target.value)}
-              placeholder='url'
-            />
-          </label>
+          <TextField style={{ marginTop: 15, width: 400 }} size="small"
+            type="url"
+            value={url}
+            onChange={event => setUrl(event.target.value)}
+            placeholder='url'
+          />
         </div>
-        <button type="submit">create</button>
+        <Button type="submit" variant="contained" style={{ marginTop: 15 }}>
+          create
+        </Button>
       </form>
     </div>
   )

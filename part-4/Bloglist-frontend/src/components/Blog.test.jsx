@@ -1,74 +1,69 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { MemoryRouter } from 'react-router-dom'
 import Blog from './Blog'
 
 describe('<Blog />', () => {
-  test('renders content', () => {
+  test('no user logged in, no buttons visible', () => {
     const blog = {
       title: 'Surfs up!',
       author: 'Elvis Presley',
-      url: 'https://youtu.be/dQw4w9WgXcQ?si=WPzYXV_Hj_T3Etp8'
-    }
-
-    const { container } = render(<Blog blog={blog} />)
-
-    const div = container.querySelector('.blog')
-
-    screen.debug(div)
-
-    expect(div).toHaveTextContent('Surfs up! Elvis Presley')
-  })
-
-  test('renders likes and url when button is pressed', async () => {
-    const blog = {
-      title: 'Surfs up!',
-      author: 'Elvis Presley',
-      url: 'https://youtu.be/dQw4w9WgXcQ?si=chv98e9bF7IHqA9_',
+      url: 'https://youtu.be/dQw4w9WgXcQ?si=WPzYXV_Hj_T3Etp8',
       likes: 0,
       user: { name: 'Superuser', id: '123' }
     }
 
-    const { container } = render(<Blog blog={blog} user={{ name: 'Superuser', id: '123' }}/>)
-    const div = container.querySelector('.blog')
-
-    const user = userEvent.setup()
-    const button = screen.getByText('view')
-    await user.click(button)
-
-    screen.debug(div)
-
-    expect(div).toHaveTextContent('https://youtu.be/dQw4w9WgXcQ?si=chv98e9bF7IHqA9_')
-    expect(div).toHaveTextContent('likes: 0')
-  })
-
-  test('renders like button click twice', async () => {
-    const blog = {
-      title: 'Surfs up!',
-      author: 'Elvis Presley',
-      url: 'https://youtu.be/dQw4w9WgXcQ?si=chv98e9bF7IHqA9_',
-      likes: 0,
-      user: { name: 'Superuser', id: '123' }
-    }
-
-    const addLikes = vi.fn()
-    render(
-      <Blog
-        blog={blog}
-        user={{ name: 'Superuser', id: '123' }}
-        addLikes={addLikes}
-      />
+    const { container, queryByRole } = render(
+      <MemoryRouter>
+        <Blog blog={blog} user={null} />
+      </MemoryRouter>
     )
+    const div = container.querySelector('.blog')
 
-    const user = userEvent.setup()
-    const viewButton = screen.getByText('view')
+    expect(div).toHaveTextContent('Elvis Presley: Surfs up!')
+    expect(div).toHaveTextContent('likes: 0')
+    expect(queryByRole('button', { name: 'remove' })).toBeNull()
+    expect(queryByRole('button', { name: 'like' })).toBeNull()
+  })
 
-    await user.click(viewButton)
+  test('different user, only like button visible', async () => {
+    const blog = {
+      title: 'Surfs up!',
+      author: 'Elvis Presley',
+      url: 'https://youtu.be/dQw4w9WgXcQ?si=WPzYXV_Hj_T3Etp8',
+      likes: 0,
+      user: { name: 'Superuser', id: '123' }
+    }
 
-    const likeButton = screen.getByText('like')
+    const { container, queryByRole } = render(
+      <MemoryRouter>
+        <Blog blog={blog} user={{ name: 'Groot', id: '133' }} />
+      </MemoryRouter>
+    )
+    const div = container.querySelector('.blog')
 
-    await user.click(likeButton)
-    await user.click(likeButton)
+    expect(div).toHaveTextContent('Elvis Presley: Surfs up!')
+    expect(queryByRole('button', { name: 'remove' })).toBeNull()
+    expect(queryByRole('button', { name: 'like' })).toBeVisible()
+  })
 
-    expect(addLikes.mock.calls).toHaveLength(2)
+  test('remove button visible for creator of blog', async () => {
+    const blog = {
+      title: 'Surfs up!',
+      author: 'Elvis Presley',
+      url: 'https://youtu.be/dQw4w9WgXcQ?si=WPzYXV_Hj_T3Etp8',
+      likes: 0,
+      user: { name: 'Superuser', id: '123' }
+    }
+
+    const { container, queryByRole } = render(
+      <MemoryRouter>
+        <Blog blog={blog} user={{ name: 'Superuser', id: '123' }} />
+      </MemoryRouter>
+    )
+    const div = container.querySelector('.blog')
+
+    expect(div).toHaveTextContent('Elvis Presley: Surfs up!')
+    expect(queryByRole('button', { name: 'remove' })).toBeVisible()
   })
 })
