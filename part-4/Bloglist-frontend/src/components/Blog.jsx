@@ -15,7 +15,7 @@ const Blog = ({ blog, addLikes, user, remove }) => {
           </Typography>
           <Typography varaint="h6" sx={{ marginBottom: 1, color: 'rgba(128, 128, 128)' }}>
             by {blog.author}
-          </Typography>
+          </Typography>hyjg
           <Link to={`${blog.url}`}>{blog.url}</Link> <br/>
           <Typography varaint="h6" sx={{ marginTop: 1, marginBottom: 1, color: 'rgba(128, 128, 128)' }}>
             added by {blog.user.name}
