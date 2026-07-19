@@ -1,0 +1,20 @@
+{
+  "notes": [
+    {
+      "id": "1",
+      "content": "tanstack query simplifies communication with backend",
+      "important": true
+    },
+    {
+      "id": "2",
+      "content": "context api providers an alternative way for sharing data between components",
+      "important": false
+    },
+    {
+      "content": "hi",
+      "important": true,
+      "id": "FGtg4nThOzo"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}
