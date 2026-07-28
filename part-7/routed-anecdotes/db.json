@@ -1,0 +1,19 @@
+{
+  "anecdotes": [
+    {
+      "content": "eee",
+      "author": "eee",
+      "info": "https://youtu.be/dQw4w9WgXcQ?si=dfE3coiJ-f0a2jmm",
+      "votes": 0,
+      "id": "B2hFU2ReWCQ"
+    },
+    {
+      "content": "dxcszv",
+      "author": "sdfgv",
+      "info": "https://youtu.be/dQw4w9WgXcQ?si=VKJOnXXY3ul4JfvU",
+      "votes": 0,
+      "id": "fO55gcS0NhA"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}
