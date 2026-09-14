@@ -1,0 +1,25 @@
+{
+  "name": "healthapp",
+  "version": "1.0.0",
+  "description": "",
+  "author": "Deividas Korsakas",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "tsc": "tsc",
+    "bmiCalculator": "tsc && node bmiCalculator.ts",
+    "exerciseCalculator": "tsc && node exerciseCalculator.ts",
+    "start": "node index.ts",
+    "dev": "concurrently \"tsc --watch\" \"node --watch index.ts\""
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/node": "^26.4.1",
+    "typescript": "^7.0.2"
+  },
+  "dependencies": {
+    "concurrently": "^10.0.5",
+    "express": "^5.2.1",
+    "qs": "^6.16.0"
+  }
+}
