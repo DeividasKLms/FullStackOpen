@@ -1,0 +1,10 @@
+{
+    "scripts": {
+        "dev": "concurrently \"npm run dev --prefix Bloglist-backend\" \"npm run dev --prefix Bloglist-frontend\"",
+        "build": "npm run build --prefix Bloglist-frontend",
+        "start": "NODE_ENV=production npm start --prefix Bloglist-backend"
+    },
+    "dependencies": {
+        "concurrently": "^10.0.4"
+    }
+}
