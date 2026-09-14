@@ -7,7 +7,7 @@ const useAnecdoteStore = create((set, get) => ({
   actions: {
     add: async (content) => {
       const newAnecdote = await anecdoteService.createNew(content)
-      set(state => ({ anecdotes: state.anecdotes. concat(newAnecdote) }))
+      set(state => ({ anecdotes: state.anecdotes.concat(newAnecdote) }))
     },
     vote: async (id) => {
       const anecdote = get().anecdotes.find(a => a.id === id)
