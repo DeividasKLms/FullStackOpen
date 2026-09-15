@@ -1,4 +1,4 @@
-import { isNumber } from './utils.ts'
+import { isNumber } from './utils.ts';
 
 interface bmiValues {
   value1: number;
@@ -13,37 +13,37 @@ const parseArguments = (args: string[]): bmiValues => {
     return {
       value1: Number(args[2]),
       value2: Number(args[3])
-    }
+    };
   } else {
     throw new Error('Provided values were not numbers!');
   }
-}
+};
 
 const calculateBmi = (height: number, weight: number) => {
-  const result = weight / ((height / 100) ** 2)
+  const result = weight / ((height / 100) ** 2);
   
   if (weight === 0 || height === 0) {
-    return 'This cannot be done'
+    return 'This cannot be done';
   } else if (result < 18.5) {
-    return 'Underweight'
+    return 'Underweight';
   } else if (result < 24.9) {
-    return 'Normal weight'
+    return 'Normal weight';
   } else if (result < 29.9) {
-    return 'Overweight'
+    return 'Overweight';
   } else {
-    return 'Obese'
+    return 'Obese';
   }
-}
+};
 
 try {
   const { value1, value2 } = parseArguments(process.argv);
-  calculateBmi(value1, value2)
+  calculateBmi(value1, value2);
 } catch (error: unknown) {
-  let errorMessage = 'Something bad happened.'
+  let errorMessage = 'Something bad happened.';
   if (error instanceof Error) {
     errorMessage += ' Error: ' + error.message;
   }
   console.log(errorMessage);
 }
 
-export default calculateBmi
+export default calculateBmi;
