@@ -11,7 +11,7 @@ app.get('/ping', (_req, res) => {
 app.post('/calculate', (req: Request, res: Response) => {
   const { value1, value2, op } = req.body;
 
-  if ( !value1 || isNaN(Number(value1)) ) {
+  if (!value1 || isNaN(Number(value1))) {
     return res.status(400).send({ error: '...' });
   }
 
