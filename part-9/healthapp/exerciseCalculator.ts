@@ -19,13 +19,11 @@ const parseArguments2 = (args: string[]): weeklyValues => {
   }
 };
 
-const calculateExercises = (goal: number, weekDays: number[]) => {
+export const calculateExercises = (goal: number, weekDays: number[]) => {
   let trainingDays = 0;
   let ratingDescription = '';
   let rating = 0;
   let sum = 0;
-
-  console.log(weekDays);
 
   for (let i = 0; i < weekDays.length; i++) {
     if (weekDays[i] > 0) {
@@ -48,7 +46,7 @@ const calculateExercises = (goal: number, weekDays: number[]) => {
     ratingDescription = 'poor effort, try harder';
   }
 
-  return console.log({
+  return ({
     periodLength: weekDays.length,
     trainingDays: trainingDays,
     success: goalReached,
