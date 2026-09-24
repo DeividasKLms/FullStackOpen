@@ -8,7 +8,8 @@ jobs:
   test:
     runs-on: ubuntu-latest
     defaults:
-      run: working-directory: part-9
+      run:
+        working-directory: part-9
     
     steps:
     - name: Checkout code
