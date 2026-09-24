@@ -1,5 +1,5 @@
 import express,{ type Request, type Response } from 'express';
-import { isNumber, isArray } from './utils.ts';
+import { isNumber, isNumberArray } from './utils.ts';
 import calculateBmi from './bmiCalculator.ts';
 import { calculateExercises } from './exerciseCalculator.ts';
 
@@ -14,15 +14,19 @@ app.get('/bmi', (req, res) => {
   const height = Number(req.query.height);
   const weight = Number(req.query.weight);
 
-  if (isNumber(height) && isNumber(weight)) {
-    res.send({
-      weight: weight,
-      height: height,
-      bmi: calculateBmi(height, weight),
-    });
-  } else {
-    throw new Error('malformed parameters');
-  }
+  console.log('height:', height);
+  console.log('weight:', weight);
+
+  if (!isNumber(height) || !isNumber(weight)) {
+    res.status(400).send({ error: 'malformatted parameters' });
+    return;
+  };
+
+  res.send({
+    weight: weight,
+    height: height,
+    bmi: calculateBmi(height, weight),
+  });
 });
 
 app.post('/exercises', (req: Request, res: Response) => {
@@ -34,15 +38,17 @@ app.post('/exercises', (req: Request, res: Response) => {
     return;
   }
 
-  if (isNumber(target) && isArray(daily_exercises)) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-    const result = calculateExercises(target, daily_exercises);
-    res.send({ result });
-  } else {
-    res.status(400).send({ error: 'malformed parameters' });
+  if (!isNumber(target) || !isNumberArray(daily_exercises)) {
+    res.status(400).send({ error: 'malformatted parameters' });
     return;
   }
-  
+
+  console.log(target, daily_exercises);
+
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+  const result = calculateExercises(target, daily_exercises);
+  console.log(result);
+  res.send(result);
 });
 
 const PORT = 3003;

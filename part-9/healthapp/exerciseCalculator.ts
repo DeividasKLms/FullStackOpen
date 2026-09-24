@@ -51,7 +51,7 @@ export const calculateExercises = (goal: number, weekDays: number[]) => {
     trainingDays: trainingDays,
     success: goalReached,
     rating: rating,
-    ratingDesctiption: ratingDescription,
+    ratingDescription: ratingDescription,
     target: goal,
     average: average
   });
