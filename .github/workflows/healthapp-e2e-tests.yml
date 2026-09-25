@@ -7,9 +7,6 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: part-9
     
     steps:
     - name: Checkout code
@@ -21,30 +18,30 @@ jobs:
         node-version: '24'
     
     - name: Install healthapp dependencies
-      working-directory: ./healthapp
+      working-directory: part-9/healthapp
       run: npm install
     
     - name: Lint healthapp
-      working-directory: ./healthapp
+      working-directory: part-9/healthapp
       run: npm run lint
     
     - name: Start healthapp server
-      working-directory: ./healthapp
+      working-directory: part-9/healthapp
       run: |
         npm start &
         echo $! > server.pid
         sleep 3
     
     - name: Install test dependencies
-      working-directory: ./healthapp-tests
+      working-directory: part-9/healthapp-tests
       run: npm install
     
     - name: Install Playwright browsers
-      working-directory: ./healthapp-tests
+      working-directory: part-9/healthapp-tests
       run: npx playwright install --with-deps chromium
     
     - name: Run e2e tests
-      working-directory: ./healthapp-tests
+      working-directory: part-9/healthapp-tests
       run: npm test
     
     - name: Upload test report
@@ -57,7 +54,7 @@ jobs:
     
     - name: Stop healthapp server
       if: always()
-      working-directory: ./healthapp
+      working-directory: part-9/healthapp
       run: |
         if [ -f server.pid ]; then
           kill $(cat server.pid) || true
