@@ -1,26 +1,27 @@
 import diagnosesData from '../../data/diagnoses.ts';
-import type { Diagnosis, DiagnosesEntry } from '../types.ts';
+import patientsData from '../../data/patients.ts';
+import type { Diagnosis, NonSsnPatient } from '../types.ts';
 
-const diagnoses: DiagnosesEntry[] = diagnosesData as DiagnosesEntry[];
-
-const getEntries = (): DiagnosesEntry[] => {
-  return diagnoses;
+const getDiagnoses = (): Diagnosis[] => {
+  return diagnosesData;
 };
 
-const getNonLatinEntries = (): Diagnosis[] => {
-  return diagnoses.map(({ code, name, latin }) => ({
-    code,
+const getPatients = (): NonSsnPatient[] => {
+  return patientsData.map(({ id, name, dateOfBirth, gender, occupation }) => ({
+    id,
     name,
-    latin
-  }));
-};
+    dateOfBirth,
+    gender,
+    occupation
+  }))
+}
 
 const addDiary = () => {
   return null;
 };
 
 export default {
-  getEntries,
+  getDiagnoses,
+  getPatients,
   addDiary,
-  getNonLatinEntries
 }
